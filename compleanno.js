@@ -17,12 +17,10 @@
 //   .then(birthday => console.log("Data di nascita dello chef:", birthday))
 //   .catch(error => console.error("Errore:", error.message));
 
-async function getBirtgdayChef(id) {
+async function getBirthdayChef(id) {
 	let ricetta;
 	try {
-		const responseRicetta = await fetch(
-			`https://dummyjson.com/recipes1fwud/${id}`
-		);
+		const responseRicetta = await fetch(`https://dummyjson.com/recipes/${id}`);
 		ricetta = await responseRicetta.json();
 	} catch (error) {
 		console.error("Si è verificato un errore: ", error.message);
@@ -39,7 +37,7 @@ async function getBirtgdayChef(id) {
 
 async function funzioneDiSupporto() {
 	try {
-		const birthdayDate = await getBirtgdayChef(1);
+		const birthdayDate = await getBirthdayChef(1);
 		console.log(`La sua data di nascita è ${birthdayDate}`);
 	} catch (error) {
 		console.error(error);
