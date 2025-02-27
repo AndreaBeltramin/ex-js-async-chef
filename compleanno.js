@@ -18,8 +18,16 @@
 //   .catch(error => console.error("Errore:", error.message));
 
 async function getBirtgdayChef(id) {
-	const responseRicetta = await fetch(`https://dummyjson.com/recipes/${id}`);
-	const ricetta = await responseRicetta.json();
+	let ricetta;
+	try {
+		const responseRicetta = await fetch(
+			`https://dummyjson.com/recipes1fwud/${id}`
+		);
+		ricetta = await responseRicetta.json();
+	} catch (error) {
+		console.error("Si è verificato un errore alla riga 26: ", error.message);
+		throw new Error("Non è possibile continuare");
+	}
 	const userId = ricetta.userId;
 	const responseInfoChef = await fetch(`https://dummyjson.com/users/${userId}`);
 	const infoChef = await responseInfoChef.json();
@@ -39,8 +47,8 @@ funzioneDiSupporto();
 // Bonus 1
 // Attualmente, se la prima richiesta non trova una ricetta, la seconda richiesta potrebbe
 // comunque essere eseguita causando errori a cascata.
-
 // Modifica getChefBirthday(id) per intercettare eventuali errori prima di fare la seconda richiesta.
+
 // Bonus 2
 // Utilizza la libreria dayjs per formattare la data di nascita nel formato giorno/mese/anno.
 // Esempio di output atteso con formattazione
