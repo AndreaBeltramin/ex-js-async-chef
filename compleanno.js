@@ -25,8 +25,8 @@ async function getBirtgdayChef(id) {
 		);
 		ricetta = await responseRicetta.json();
 	} catch (error) {
-		console.error("Si è verificato un errore alla riga 26: ", error.message);
-		throw new Error("Non è possibile continuare");
+		console.error("Si è verificato un errore: ", error.message);
+		throw new Error("Non è possibile trovare la ricetta desiderata");
 	}
 	const userId = ricetta.userId;
 	const responseInfoChef = await fetch(`https://dummyjson.com/users/${userId}`);
@@ -38,8 +38,14 @@ async function getBirtgdayChef(id) {
 }
 
 async function funzioneDiSupporto() {
-	const birthdayDate = await getBirtgdayChef(1);
-	console.log(`La sua data di nascita è ${birthdayDate}`);
+	try {
+		const birthdayDate = await getBirtgdayChef(1);
+		console.log(`La sua data di nascita è ${birthdayDate}`);
+	} catch (error) {
+		console.error(error);
+	} finally {
+		console.log("fine!");
+	}
 }
 
 funzioneDiSupporto();
