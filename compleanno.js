@@ -31,6 +31,7 @@ async function getBirthdayChef(id) {
 	}
 
 	let birthdayDate;
+	let dataFormattata;
 	try {
 		const userId = ricetta.userId;
 		const responseInfoChef = await fetch(
@@ -38,6 +39,7 @@ async function getBirthdayChef(id) {
 		);
 		const infoChef = await responseInfoChef.json();
 		birthdayDate = infoChef.birthDate;
+		dataFormattata = dayjs(birthdayDate).format("DD/MM/YYYY");
 	} catch (error) {
 		console.error(error);
 		throw new Error("Non è possibile trovare la data di nascita dello chef");
@@ -46,7 +48,7 @@ async function getBirthdayChef(id) {
 		throw new Error("Data di nascita dello chef non trovata");
 	}
 
-	return birthdayDate;
+	return dataFormattata;
 }
 
 async function funzioneDiSupporto() {
