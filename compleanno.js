@@ -23,26 +23,40 @@ async function getBirthdayChef(id) {
 		const responseRicetta = await fetch(`https://dummyjson.com/recipes/${id}`);
 		ricetta = await responseRicetta.json();
 	} catch (error) {
-		console.error("Si è verificato un errore: ", error.message);
+		console.error(error);
 		throw new Error("Non è possibile trovare la ricetta desiderata");
 	}
-	const userId = ricetta.userId;
-	const responseInfoChef = await fetch(`https://dummyjson.com/users/${userId}`);
-	const infoChef = await responseInfoChef.json();
-	console.log(`Lo chef si chiama ${infoChef.firstName}`);
+	if (ricetta.message) {
+		throw new Error(ricetta.message);
+	}
 
-	const birthdayDate = infoChef.birthDate;
+	let birthdayDate;
+	try {
+		const userId = ricetta.userId;
+		const responseInfoChef = await fetch(
+			`https://dummyjson.com/users/${userId}`
+		);
+		const infoChef = await responseInfoChef.json();
+		birthdayDate = infoChef.birthDate;
+	} catch (error) {
+		console.error(error);
+		throw new Error("Non è possibile trovare la data di nascita dello chef");
+	}
+	if (!birthdayDate) {
+		throw new Error("Data di nascita dello chef non trovata");
+	}
+
 	return birthdayDate;
 }
 
 async function funzioneDiSupporto() {
 	try {
 		const birthdayDate = await getBirthdayChef(1);
-		console.log(`La sua data di nascita è ${birthdayDate}`);
+		console.log(`La data di nascita dello chef è ${birthdayDate}`);
 	} catch (error) {
 		console.error(error);
 	} finally {
-		console.log("fine!");
+		console.log("fine del codice!");
 	}
 }
 
